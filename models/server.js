@@ -9,9 +9,15 @@ class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-        this.userPath = '/api/user';
+        this.paths = {
+            userPath: '/api/user',
+            authPath: '/api/auth',
+            categoriesPath: '/api/categories',
+            productsPath: '/api/products',
+            buscarPath: '/api/buscar',
 
-        //conectar base de datos
+        };
+                //conectar base de datos
         this.dbconection();
 
         //Middlewares
@@ -42,7 +48,11 @@ class Server{
     }
 
     routes( ){
-       this.app.use(this.userPath, require('../routes/user'));
+       this.app.use(this.paths.authPath, require('../routes/auth'));
+       this.app.use(this.paths.categoriesPath, require('../routes/categories'));
+       this.app.use(this.paths.userPath, require('../routes/user'));
+       this.app.use(this.paths.productsPath, require('../routes/product'));
+       this.app.use(this.paths.buscarPath, require('../routes/buscar'));
     }
 
 

@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    sundayaiprestnode: 
+      container_name: api-sunday
+      restart: always
+      build: .
+      volumes:
+        - .:/usr/src/app
+      ports: 
+          - "7010:8080"
+      links:
+          - mongodb
+     
+
+    mongodb:
+        container_name: databasemongo
+        image: mongo
+        ports:
+         - "27017:27017"
+
+

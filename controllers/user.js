@@ -77,9 +77,10 @@ const deleteUser = async(req, res = response) => {
     const {id} = req.params;
     //borrar fisicamente
     // const user = await User.findByIdAndDelete(id);
-    const user = await User.findByIdAndUpdate(id,{status: false})
+    const user = await User.findByIdAndUpdate(id,{status: false});
+    const userAuth = req.user;
 
-    res.json(user);
+    res.status(200).json(user);
   }
 
 const patchUser = (req, res = response) => {
@@ -90,10 +91,20 @@ const patchUser = (req, res = response) => {
     )
   }
 
+  const getUserId = async(req = request, res = response) => {
+
+    const { id } = req.params;
+
+    const usuario = await User.findById( id );
+
+    res.json(usuario);
+}
+
   module.exports = {
         getUser,
         putUser,
         postUser,
         deleteUser,
-        patchUser
+        patchUser,
+        getUserId
   }
