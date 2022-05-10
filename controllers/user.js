@@ -18,7 +18,7 @@ const getUser = async (req = request, res = response) => {
     // const totalUser = await User.countDocuments(querySt);
 
     const [users, totalUser] = await Promise.all([
-        User.find(querySt)
+        User.find()
         .skip(Number(init))
         .limit(Number(limit)),
         User.countDocuments(querySt)
@@ -36,7 +36,7 @@ const getUser = async (req = request, res = response) => {
 const putUser = async (req, res = response) => {
     
    const {id} = req.params;
-    const {_id,  password, google,...rest} = req.body;
+    const {_id,  password, google, rol,...rest} = req.body;
         // validar con db
     if(password){
          //encripta password 
@@ -45,7 +45,7 @@ const putUser = async (req, res = response) => {
 
     }
 
-    const userupdate =await User.findByIdAndUpdate(id, rest)
+    const userupdate =await User.findByIdAndUpdate(id, rest,{new: true})
 
 
     res.json(userupdate)
@@ -53,8 +53,8 @@ const putUser = async (req, res = response) => {
 
 const postUser = async (req, res = response) => {
   
-    const {nombre, correo, password, rol} = req.body;
-    const user = new User({nombre, correo, password, rol});
+    const {nombre, correo, password, rol, idusergroup} = req.body;
+    const user = new User({nombre, correo, password, idusergroup});
 
     // verificar si existe correo
    
@@ -67,20 +67,26 @@ const postUser = async (req, res = response) => {
     //guardar base de datos
     await user.save();
     res.status(201).json(
-        {
+        
                       user
-        }
+        
     )
   }
 
 const deleteUser = async(req, res = response) => {
     const {id} = req.params;
+    const {status,...data} = req.body
     //borrar fisicamente
     // const user = await User.findByIdAndDelete(id);
-    const user = await User.findByIdAndUpdate(id,{status: false});
-    const userAuth = req.user;
-
+    if (status == null){
+    const user = await User.findByIdAndUpdate(id,{status: false},{new: true} );
     res.status(200).json(user);
+    }else{
+      const user = await User.findByIdAndUpdate(id,{status: status}, {new: true});
+    res.status(200).json(user);
+    }
+    // const userAuth = req.user;
+
   }
 
 const patchUser = (req, res = response) => {

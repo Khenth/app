@@ -35,6 +35,7 @@ const login = async (req, res = response)=>{
         // verificar password
 
         const validPass = bcryptjs.compareSync(password, user.password);
+        // console.log(validPass)
         if(!validPass){
             return res.status(400).json({
                 msg: "Password incorrecto"
@@ -111,8 +112,24 @@ const login = async (req, res = response)=>{
 
     }
 
+const renovarToken=async (req, res = response)=>{
+        const {user} = req;
+
+        const token = await generarJWT(user.id)
+
+        res.json(
+            {
+                user,
+                token
+            }
+        )
+}
+
 module.exports = {
     login,
-    googleSingIn
+    googleSingIn,
+    renovarToken
 
 }
+
+
