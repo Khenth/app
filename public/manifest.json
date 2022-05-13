@@ -1,6 +1,6 @@
 {
-    "name": "sundaysoft",
-    "short_name": "sundaysoft",
+    "name": "sundayapp",
+    "short_name": "sundayapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

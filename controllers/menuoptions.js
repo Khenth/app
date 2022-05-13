@@ -312,14 +312,20 @@ const deleteMenuOptions = async(req, res = response) => {
   res.json('este es el Delete de User Menu')
   }
 
-  const getMenuOptionsId = async(req = request, res = response) => {
+  const putMenuOptionsAdminId = async(req = request, res = response) => {
+    const {id} = req.params;
+    const {status,...data} = req.body
+    console.log(req.body)
+    optionsaccess = await MenuOptions.findByIdAndUpdate(id,{status: status}, {new: true});
 
-    res.json('este es el GetbyId de User Menu')
+    
+
+
+    res.json({optionsaccess});
 }
   const getMenuOptionsAdmin = async(req = request, res = response) => {
     const querySt = {status : true}
     menuOptiosAccess = await MenuOptions.find().populate('idsubmenuoption');
-
     res.json({
       menuOptiosAccess
     })
@@ -362,6 +368,13 @@ const deleteMenuOptions = async(req, res = response) => {
     })
 }
 
+
+
+
+
+
+
+
   module.exports = {
         //auth
         getMenuOptions,
@@ -375,7 +388,7 @@ const deleteMenuOptions = async(req, res = response) => {
         //Crud Auth Access
         getMenuOptionsAdmin,
         getMenuOptionsAdminbyID,
-        getMenuOptionsId
+        putMenuOptionsAdminId
   }
 
 
