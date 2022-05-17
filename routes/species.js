@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
-const { crearCategoria, obtenerCategories, ObtenerCategorie, actualizarCategorie, deleteCategorie } = require('../controllers/categorie');
-const { existeCategorie } = require('../helpers/db_validators');
+const { crearSpecie, obtenerSpecies, ObtenerSpecie, actualizarSpecie, deleteSpecie } = require('../controllers/specie');
+const { existeSpecie } = require('../helpers/db_validators');
 const { isAdminRol } = require('../middleware');
 const { validarJWT } = require('../middleware/validar-jwt');
 const { validarCampos } = require('../middleware/validate-campos');
@@ -10,40 +10,40 @@ const router = Router();
 
 
 // ver catergorias
-router.get('/',obtenerCategories);
+router.get('/',obtenerSpecies);
 
-// ver una categoria
+// ver una Specie
 router.get('/:id',[
     validarJWT,
     check('id', 'No es un Id valido').isMongoId(),
-    check('id').custom(existeCategorie),
+    check('id').custom(existeSpecie),
     validarCampos
-],ObtenerCategorie );
+],ObtenerSpecie );
 
-// crear una categoria - privado
+// crear una Specie - privado
 router.post('/',[
     validarJWT,
     check('nombre','nombre requerido').not().isEmpty(),
     validarCampos
-],crearCategoria );
+],crearSpecie );
 
-// actualizar categorias - privado
+// actualizar Species - privado
 router.put('/:id',[
     validarJWT,
     check('id', 'No es un Id valido').isMongoId(),
-    check('id').custom(existeCategorie),
+    check('id').custom(existeSpecie),
     check('nombre','nombre requerido').not().isEmpty(),
     validarCampos
-] ,actualizarCategorie );
+] ,actualizarSpecie );
 
-// delete categoria - privado
+// delete Specie - privado
 router.delete('/:id',[
     validarJWT,
     isAdminRol,
     check('id', 'No es un Id valido').isMongoId(),
-    check('id').custom(existeCategorie),
+    check('id').custom(existeSpecie),
     validarCampos
-], deleteCategorie);
+], deleteSpecie);
 
 
 module.exports = router;

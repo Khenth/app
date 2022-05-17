@@ -1,11 +1,11 @@
 const { response } = require("express");
 const {ObjectId} = require('mongoose').Types;
-const {User, Categorie, Product} = require('../models/')
+const {User, Specie, Variety} = require('../models/')
 
 const coleccionesPermitidas =[
     'users',
-    'categories',
-    'products',
+    'species',
+    'varieties',
     'rols'
 ];
 
@@ -32,37 +32,37 @@ const buscarUsers = async(term, res = response)=>{
     
 }
 
-const buscarCategories = async (term, res = response)=>{
+const buscarSpecies = async (term, res = response)=>{
         const isMondoId = ObjectId.isValid(term);
         if(isMondoId){
-            const categorie = await Categorie.findById(term);
+            const specie = await Specie.findById(term);
             return res.json({
-                result : categorie ? [categorie] : []
+                result : specie ? [specie] : []
             })
         }
 
         const regex = new RegExp(term, 'i');
-        const categories = await Categorie.find({nombre: regex,status:true
+        const species = await Specie.find({nombre: regex,status:true
           });
         res.json({
-            result : categories
+            result : species
         })
 }
 
-const buscarProducts = async (term, res = response)=>{
+const buscarVarieties = async (term, res = response)=>{
     const isMondoId = ObjectId.isValid(term);
     if(isMondoId){
-        const product = await Product.findById(term).populate('categorie', 'nombre');
+        const variety = await Variety.findById(term).populate('specie', 'nombre');
         return res.json({
-            result : product ? [product] : []
+            result : variety ? [variety] : []
         })
     }
 
     const regex = new RegExp(term, 'i');
-    const products = await Product.find({nombre: regex, status:true
-    }).populate('categorie', 'nombre');
+    const varieties = await Variety.find({nombre: regex, status:true
+    }).populate('specie', 'nombre');
     res.json({
-        result : products
+        result : varieties
     })
 }
 
@@ -86,10 +86,10 @@ const buscar = (req, res = response, )=>{
         case 'users':
                buscarUsers(term, res);
             break;
-        case 'categories':
-                buscarCategories(term, res);
+        case 'species':
+                buscarSpecies(term, res);
             break;
-        case 'products':
+        case 'varieties':
                 buscarProducts(term, res)
             break;
     

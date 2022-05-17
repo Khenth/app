@@ -22,8 +22,8 @@ class Server{
             //authmenu
             userAuthMenuPath: '/api/menuoptions',
             // cruds
-            categoriesPath: '/api/categories',
-            productsPath: '/api/products',
+            speciesPath: '/api/species',
+            varietiesPath: '/api/varieties',
             //buscar
             buscarPath: '/api/buscar',
 
@@ -70,8 +70,8 @@ class Server{
        //menuauth
        this.app.use(this.paths.userAuthMenuPath, require('../routes/menuoptions'));
        //cruds
-       this.app.use(this.paths.categoriesPath, require('../routes/categories'));
-       this.app.use(this.paths.productsPath, require('../routes/product'));
+       this.app.use(this.paths.speciesPath, require('../routes/species'));
+       this.app.use(this.paths.varietiesPath, require('../routes/variety'));
        //buscar
        this.app.use(this.paths.buscarPath, require('../routes/buscar'));
     }
@@ -80,7 +80,7 @@ class Server{
     listen(){
         
     this.app.listen(this.port, () => {
-    console.log(`Example app listening on port ${this.port}`)
+    console.log(`App listening on port ${this.port}`)
   })
     }
 

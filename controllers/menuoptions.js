@@ -315,7 +315,7 @@ const deleteMenuOptions = async(req, res = response) => {
   const putMenuOptionsAdminId = async(req = request, res = response) => {
     const {id} = req.params;
     const {status,...data} = req.body
-    console.log(req.body)
+    
     optionsaccess = await MenuOptions.findByIdAndUpdate(id,{status: status}, {new: true});
 
     
@@ -323,13 +323,46 @@ const deleteMenuOptions = async(req, res = response) => {
 
     res.json({optionsaccess});
 }
+
+
+
   const getMenuOptionsAdmin = async(req = request, res = response) => {
     const querySt = {status : true}
-    menuOptiosAccess = await MenuOptions.find().populate('idsubmenuoption');
+    accessoptions = await SubMenuOptions.aggregate([
+      {$lookup:{
+        from: 'submenus',
+        localField: 'idsubmenu',
+        foreignField: '_id',
+        as: 'suboptions'
+      }},
+      // {$match:{status: true}},
+      {$unwind:'$suboptions'},
+      {$lookup:{
+        from: 'mainmenus',
+        localField: 'suboptions.idmainmenu',
+        foreignField: '_id',
+        as: 'mainoptions'
+      }},
+      {$unwind: '$suboptions' },
+      {$unwind: '$mainoptions' },
+      {$project:{
+        _id : 0,
+        id: '$_id',
+        mainmenu: '$mainoptions.mainmenu',
+        submenu: '$suboptions.submenu',
+        title : '$title',
+        detail : '$detail',
+        // status: '$status'
+      }}
+      
+    ])
+
     res.json({
-      menuOptiosAccess
+      accessoptions
     })
 }
+
+
   const getMenuOptionsAdminbyID = async(req = request, res = response) => {
     const querySt = {status : true};
     const idusergroupq = mongoose.Types.ObjectId(req.params.id);

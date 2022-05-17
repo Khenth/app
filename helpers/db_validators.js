@@ -1,4 +1,4 @@
-const { Categorie, Product } = require('../models');
+const { Specie, Variety } = require('../models');
 const Role = require('../models/role');
 const User = require('../models/user');
 
@@ -27,17 +27,18 @@ const existeId = async(id)=>{
        throw new Error(`Id ${id} no existe`)
     }}
     
-const existeCategorie = async(id) =>{
-    const existeCategorie = await Categorie.findById(id);
-    if(!existeCategorie){
-        throw new Error(`Id categorie ${id} no existe`)
+const existeSpecie = async(id) =>{
+    const existeSpecie = await Specie.findById(id);
+
+    if(!existeSpecie){
+        throw new Error(`Id Specie ${id} no existe`)
     }
 }
 
-const existeProduct = async(id)=>{
-    const existeProduct = await Product.findById(id);
-    if(!existeProduct){
-        throw new Error(`Id Producto ${id} no existe`)
+const existeVariety = async(id)=>{
+    const existeVariety = await Variety.findById(id);
+    if(!existeVariety){
+        throw new Error(`Id Varietyo ${id} no existe`)
     }
 }
 
@@ -45,6 +46,6 @@ module.exports={
     esRolValido,
     existeMail,
     existeId,
-    existeCategorie,
-    existeProduct
+    existeSpecie,
+    existeVariety
 }

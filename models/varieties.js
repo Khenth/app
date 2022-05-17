@@ -1,7 +1,7 @@
 const {Schema, model} = require('mongoose');
 
 
-const ProductSchema = Schema({
+const VarietieSchema = Schema({
         nombre:{
             type : String,
             required : [true, "Nombre requerido"],
@@ -11,13 +11,12 @@ const ProductSchema = Schema({
             type : String,
             required : [true, "Color requerido"],
         },
-        largo:{
+        siglas:{
             type : String,
-            required : [true, "Color requerido"],
         },
-        tipoUnidad:{
-            type : String,
-            required : [true, "Color requerido"],
+        stemsmalla:{
+            type : Number,
+            default : 0
         },
         status:{
             type : Boolean,
@@ -29,17 +28,17 @@ const ProductSchema = Schema({
             ref: 'user',
             required: true
         },
-        categorie:{
+        idspecie:{
             type: Schema.Types.ObjectId,
-            ref: 'Categorie',
+            ref: 'specie',
             required: true
         },
 })
 
-ProductSchema.methods.toJSON = function(){
-    const {__v, status,...data} = this.toObject();
+VarietieSchema.methods.toJSON = function(){
+    const {__v,...data} = this.toObject();
       return data;
 }
 
 
-module.exports =  model('Product', ProductSchema )
+module.exports =  model('Varietie', VarietieSchema )

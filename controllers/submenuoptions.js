@@ -29,8 +29,6 @@ const putSubMenuOptions = async (req, res = response) => {
 const postSubMenuOptions = async (req, res = response) => {
 
     const data = req.body;
-  
-
 
     const SubMenuOption = new SubMenuOptions(data);
 

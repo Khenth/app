@@ -1,15 +1,15 @@
 
 
-const Categorie = require('./categories');
+const Specie = require('./species');
 const Role = require('./role');
 const Server = require('./server');
 const User = require('./user');
-const Product = require('./product');
+const Variety = require('./varieties');
 
 module.exports={
-    Categorie,
+    Specie,
     Role,
     Server,
     User,
-    Product,
+    Variety,
 }
