@@ -22819,7 +22819,7 @@ for(;r!==-1;){q=r===0?0:B.b.wk(a,"\n",r-1)+1
 if(c===r-q)return q
 r=B.b.iQ(a,b,r+1)}return null},
 avS(){var s,r
-A.a($.wp().vO$,"options").nX$="http://localhost:8080/api"
+A.a($.wp().vO$,"options").nX$="https://sundayapp.app/api"
 s=A.a($.wp().vO$,"options")
 r=A.cc(J.aB($.K2.b4().a,"x-token"))
 s.sOv(0,A.af(["x-token",r==null?"":r],t.N,t.z))},
