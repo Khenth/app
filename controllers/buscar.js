@@ -52,7 +52,7 @@ const buscarSpecies = async (term, res = response)=>{
 const buscarVarieties = async (term, res = response)=>{
     const isMondoId = ObjectId.isValid(term);
     if(isMondoId){
-        const variety = await Variety.findById(term).populate('specie', 'nombre');
+        const variety = await Variety.findById(term).populate('idspecie', 'nombre');
         return res.json({
             result : variety ? [variety] : []
         })
@@ -60,7 +60,7 @@ const buscarVarieties = async (term, res = response)=>{
 
     const regex = new RegExp(term, 'i');
     const varieties = await Variety.find({nombre: regex, status:true
-    }).populate('specie', 'nombre');
+    }).populate('idspecie', 'nombre');
     res.json({
         result : varieties
     })
@@ -90,7 +90,7 @@ const buscar = (req, res = response, )=>{
                 buscarSpecies(term, res);
             break;
         case 'varieties':
-                buscarProducts(term, res)
+                buscarVarieties(term, res)
             break;
     
         default:
