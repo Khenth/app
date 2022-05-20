@@ -11,8 +11,30 @@ const obtenerVarieties = async (req = request,res=response)=>{
     const [totalVarieties, varieties] = await Promise.all([
         Variety.countDocuments(querySt),
         Variety.find(querySt)
-        .populate('user','nombre')
-        .populate('idspecie','nombre')
+        // .populate('user','nombre')
+        // .populate('idspecie','nombre')
+        .skip(init)
+        .limit(limit)
+    ])
+
+    res.json({
+        totalVarieties,
+        varieties
+    })
+
+}
+const getVarietiesBySpecie = async (req = request,res=response)=>{
+    const {id} = req.params
+    const specie = {idspecie : id}
+    const {init=0, limit=10}= req.query;
+    // const querySt = {status: true};
+
+
+    const [totalVarieties, varieties] = await Promise.all([
+        Variety.countDocuments(specie),
+        Variety.find(specie)
+        // .populate('user','nombre')
+        // .populate('idspecie','nombre')
         .skip(init)
         .limit(limit)
     ])
@@ -80,10 +102,15 @@ const actualizarVariety = async (req, res = response)=>{
 const deleteVariety = async (req, res = response)=>{
 
     const {id} = req.params;
+    const {status,...data} = req.body;
 
-    const deleteVariety = await Variety.findByIdAndUpdate(id,{status:false}, {new:true});
-
+    if(status == null){
+        const deleteVariety = await Variety.findByIdAndUpdate(id,{status:false}, {new:true});
+        res.json(deleteVariety);
+    }
+    const deleteVariety = await Variety.findByIdAndUpdate(id,{status:status}, {new:true});
     res.json(deleteVariety);
+
 
 
 }
@@ -92,6 +119,7 @@ const deleteVariety = async (req, res = response)=>{
 module.exports = {
     obtenerVarieties,
     obtenerVariety,
+    getVarietiesBySpecie,
     crearVariety,
     actualizarVariety,
     deleteVariety

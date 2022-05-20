@@ -11,8 +11,9 @@ const VarietieSchema = Schema({
             type : String,
             required : [true, "Color requerido"],
         },
-        siglas:{
+        ciclo:{
             type : String,
+            required :[true, "Ciclo de Cultivo requerido"]
         },
         stemsmalla:{
             type : Number,

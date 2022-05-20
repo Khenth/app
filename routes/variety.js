@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
-const { obtenerVarieties, crearVariety, obtenerVariety, actualizarVariety, deleteVariety } = require('../controllers/variety');
+const { obtenerVarieties, crearVariety, obtenerVariety, actualizarVariety, deleteVariety, getVarietiesBySpecie } = require('../controllers/variety');
 const { existeVariety } = require('../helpers/db_validators');
 const { isAdminRol } = require('../middleware');
 const { validarJWT } = require('../middleware/validar-jwt');
@@ -17,6 +17,11 @@ router.get('/:id',[
     check('id').custom(existeVariety),
     validarCampos
 ],obtenerVariety);
+router.get('/specie/:id',[
+    check('id', 'No es un id Valido').isMongoId(),
+    // check('id').custom(existeVariety),
+    validarCampos
+],getVarietiesBySpecie);
 
 router.post('/',[
     validarJWT,
