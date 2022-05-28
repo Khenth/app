@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const { check } = require('express-validator');
-const {login, googleSingIn, renovarToken} = require('../controllers/auth');
+const {login, googleSingIn, renovarToken, farmLogin} = require('../controllers/auth');
 const { validarJWT } = require('../middleware');
 const { validarCampos } = require('../middleware/validate-campos');
 
@@ -10,7 +10,7 @@ router.post('/login',[
     check('correo', 'correo obligatorio').isEmail(),
     check('password', 'password obligatorio').not().isEmpty(),
     validarCampos
-], login );
+], login);
 
 router.post('/google',[
     check('id_token', 'Token google necesario').not().isEmpty(),
@@ -18,6 +18,8 @@ router.post('/google',[
 ], googleSingIn );
 
 router.get('/', validarJWT, renovarToken)
+
+router.get('/login/farm', validarJWT, farmLogin)
 
 
 module.exports = router;

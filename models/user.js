@@ -30,6 +30,12 @@ const UserSchema = Schema({
         ref: 'usergroup',
         required: true
     },
+    idfarms:[{
+        idfarm:{
+            type: Schema.Types.ObjectId,
+            ref: 'farm',
+            }
+        }],
     status: {
         type : Boolean,
         default: true
@@ -46,7 +52,7 @@ const UserSchema = Schema({
 })
 
 UserSchema.methods.toJSON = function(){
-    const {__v,_id, ...user} = this.toObject();
+    const {__v,_id, idfarms, ...user} = this.toObject();
     user.uid = _id;
     return user;
 }

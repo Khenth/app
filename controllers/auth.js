@@ -16,6 +16,7 @@ const login = async (req, res = response)=>{
         // verificar correo
             
        const user = await User.findOne({correo})
+    
         if(!user){
             return res.status(400).json({
                 msg: "usuario / password no son correctos"
@@ -43,12 +44,12 @@ const login = async (req, res = response)=>{
         }
 
         // generar JWT
+        
         const token = await generarJWT(user.id)
-
 
         res.json({
            user,
-           token
+           token,
         })
         
     } catch (error) {
@@ -122,14 +123,64 @@ const renovarToken=async (req, res = response)=>{
                 user,
                 token
             }
-        )
+        )}
+
+const farmLogin =async(req = request, res = response)=>{
+    const userAuth = req.user._id
+    const farmSrc = await User.aggregate([
+        {
+        $match: {_id : userAuth}
+        },
+           {$lookup:{
+                from: 'farms',
+                localField: 'idfarms.idfarm',
+                foreignField: '_id',
+                as: 'idfarms'
+            }},
+            {$project: {
+                    'idfarms' : true,
+                    '_id':0,
+                     // 'idfarms.status':0,
+                    // 'idfarms.__v':0,
+                    // 'idfarms.user':0,
+                    }}, 
+            {$project: {
+                    'idfarms.status':0,
+                    'idfarms.__v':0,
+                    'idfarms.user':0,
+                    }}, 
+                    {
+                    $match: {"idfarms.0" :{"$exists": true }}
+                    },           
+            
+         ])
+        //  if(!farmSrc.length){console.log("El array está vacío!")}
+
+         if(farmSrc.length == 0){
+            idfarms ={
+                "idfarms": [
+                    {
+                        "_id": "ox000000",
+                        "nombre": "Sin Finca Asignada"
+                    }
+                ]
+            }
+         }else{
+             idfarms = farmSrc[0]
+         }
+            res.json(
+                idfarms
+            )
+    
+
 }
+
 
 module.exports = {
     login,
     googleSingIn,
-    renovarToken
-
+    renovarToken,
+    farmLogin
 }
 
 

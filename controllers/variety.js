@@ -93,7 +93,7 @@ const actualizarVariety = async (req, res = response)=>{
     data.user = req.user._id;
 
     const actualizaVariety = await Variety.findByIdAndUpdate(id,data,{new: true})
-
+    
     res.status(200).json(actualizaVariety);
 
 

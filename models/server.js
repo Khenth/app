@@ -24,6 +24,9 @@ class Server{
             // cruds
             speciesPath: '/api/species',
             varietiesPath: '/api/varieties',
+            farmsPath: '/api/farms',
+            zonesPath: '/api/zones',
+            lotsPath: '/api/lots',
             //buscar
             buscarPath: '/api/buscar',
 
@@ -72,6 +75,9 @@ class Server{
        //cruds
        this.app.use(this.paths.speciesPath, require('../routes/species'));
        this.app.use(this.paths.varietiesPath, require('../routes/variety'));
+       this.app.use(this.paths.farmsPath, require('../routes/growing_env/farms'));
+       this.app.use(this.paths.zonesPath, require('../routes/growing_env/zones'));
+       this.app.use(this.paths.lotsPath, require('../routes/growing_env/lots'));
        //buscar
        this.app.use(this.paths.buscarPath, require('../routes/buscar'));
     }
