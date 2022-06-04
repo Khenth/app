@@ -42,4 +42,4 @@ VarietieSchema.methods.toJSON = function(){
 }
 
 
-module.exports =  model('Varietie', VarietieSchema )
+module.exports =  model('varietie', VarietieSchema )

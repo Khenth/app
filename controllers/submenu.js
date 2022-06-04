@@ -29,8 +29,7 @@ const putSubMenu = async (req, res = response) => {
 const postSubMenu = async (req, res = response) => {
 
     const data = req.body;
-  
-
+    data.submenu = data.submenu.toUpperCase();
 
     const SubMenus = new SubMenu(data);
 

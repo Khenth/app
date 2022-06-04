@@ -8,6 +8,7 @@ const Variety = require('./varieties');
 const Farm = require('./growing_env/farms');
 const Zone = require('./growing_env/zones');
 const Lot = require('./growing_env/lots');
+const FarmCropHarvest = require('./farm_crop_harvest/farmcropharvest');
 
 module.exports={
     Specie,
@@ -17,5 +18,6 @@ module.exports={
     Variety,
     Farm,
     Zone,
-    Lot
+    Lot,
+    FarmCropHarvest
 }

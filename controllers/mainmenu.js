@@ -29,7 +29,7 @@ const putMainMenu = async (req, res = response) => {
 const postMainMenu = async (req, res = response) => {
 
     const data = req.body;
-  
+    data.mainmenu = data.mainmenu.toUpperCase();
 
 
     const MainMenus = new MainMenu(data);

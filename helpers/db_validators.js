@@ -42,10 +42,23 @@ const existeVariety = async(id)=>{
     }
 }
 
+const validatedCollections = (collection = '', collections = [])=>{
+
+    const include = collections.includes(collection);
+
+    if(!include){
+        throw new Error(`La coleccion ${collection} no es permitida, ${collections} `)
+    }
+
+    return true;
+}
+
+
 module.exports={
     esRolValido,
     existeMail,
     existeId,
     existeSpecie,
-    existeVariety
+    existeVariety,
+    validatedCollections
 }

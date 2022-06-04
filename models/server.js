@@ -2,7 +2,7 @@
 const express = require('express')
 var cors = require('cors');
 const { dbConection } = require('../database/config');
-
+const fileUpload = require('express-fileupload')
 
 class Server{
 
@@ -27,8 +27,13 @@ class Server{
             farmsPath: '/api/farms',
             zonesPath: '/api/zones',
             lotsPath: '/api/lots',
+            // registro de cosecha
+            farmCropHarvestPath: '/api/farm/harvest',
+
             //buscar
             buscarPath: '/api/buscar',
+            //Carga de archivos
+            uploadsPath: '/api/uploads',
 
         };
                 //conectar base de datos
@@ -59,6 +64,14 @@ class Server{
 
         //directorio publico
         this.app.use(express.static('public'));
+
+        //Carga de Archivos
+
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true
+        }));
     }
 
     routes( ){
@@ -78,8 +91,12 @@ class Server{
        this.app.use(this.paths.farmsPath, require('../routes/growing_env/farms'));
        this.app.use(this.paths.zonesPath, require('../routes/growing_env/zones'));
        this.app.use(this.paths.lotsPath, require('../routes/growing_env/lots'));
+       //registro cosecha
+       this.app.use(this.paths.farmCropHarvestPath, require('../routes/farm_crop_harvest/farmcropharvest'));
        //buscar
        this.app.use(this.paths.buscarPath, require('../routes/buscar'));
+       //Carga de archivos
+       this.app.use(this.paths.uploadsPath, require('../routes/uploads'));
     }
 
 

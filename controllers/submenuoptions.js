@@ -29,9 +29,9 @@ const putSubMenuOptions = async (req, res = response) => {
 const postSubMenuOptions = async (req, res = response) => {
 
     const data = req.body;
-
+    data.title = data.title.toUpperCase();
     const SubMenuOption = new SubMenuOptions(data);
-
+    
     await SubMenuOption.save();
     res.status(201).json(
         {
