@@ -28,7 +28,7 @@ const UserSchema = Schema({
     idusergroup:{
         type: Schema.Types.ObjectId,
         ref: 'usergroup',
-        required: true
+        // required: true
     },
     idfarms:[{
         idfarm:{

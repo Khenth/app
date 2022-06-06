@@ -69,7 +69,7 @@ const login = async (req, res = response)=>{
 
         try {
             const {nombre, img, correo} = await googleVerify(id_token); 
-            
+            console.log(nombre, img, correo)
             //console.log(googleUser);
             let user = await User.findOne({correo});
             if (!user){
@@ -78,6 +78,7 @@ const login = async (req, res = response)=>{
                    nombre,
                    correo,
                    password: ':p',
+                //    idusergroup: '',
                    img,
                    rol: "USER_ROLE",
                    google: true
