@@ -27643,7 +27643,7 @@ for(;r!==-1;){q=r===0?0:B.b.yE(a,"\n",r-1)+1
 if(c===r-q)return q
 r=B.b.k6(a,b,r+1)}return null},
 aml(){var s,r,q
-A.b($.yH().ya$,"options").pE$="http://localhost:8080/api"
+A.b($.yH().ya$,"options").pE$="https://sundayapp.app/api"
 s=A.b($.yH().ya$,"options")
 r=A.cq(J.ad($.jC.bj().a,"x-token"))
 if(r==null)r=""
