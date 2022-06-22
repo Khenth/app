@@ -17,7 +17,7 @@ module.exports = {
       }
     }],
 
-  //// deploy : {     
+  // deploy : {     
   //   production : {
   //      "user" : "Khenth",
   //      "host" : ["212.83.163.175"],
