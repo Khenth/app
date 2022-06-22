@@ -15,6 +15,11 @@ const VarietieSchema = Schema({
             type : String,
             required :[true, "Ciclo de Cultivo requerido"]
         },
+        manejo:{
+            type : String,
+            required :[true, "Menejo de requerido"],
+            emun: ['LONGITUD', 'PESO'],
+        },
         stemsmalla:{
             type : Number,
             default : 0

@@ -1,18 +1,94 @@
 const { response, request } = require("express");
-const {FarmCropHarvest} = require('../../models')
+const {FarmCropHarvest, Lot} = require('../../models')
 const moment = require('moment');
 // OBTENER Lots PAGINADO - TOTAL -  POPULATE
 
 const getFarmCropHarvests = async (req = request, res = response)=>{
 
-    const {limit = 5, init = 0} = req.query;
+    // const {limit = 5, init = 0} = req.query;
+   const idfarm = req.farm._id;
     const querySt = {status : true};
 
     const [FarmCropHarvests, totalFarmCropHarvests] = await Promise.all([
 
-        FarmCropHarvest.find()            
-            .skip(Number(init))
-            .limit(Number(limit)),
+        FarmCropHarvest.aggregate([
+            {$match:{idfarm : idfarm}},
+            {$lookup:{
+                from : 'lots',
+                foreignField : '_id',
+                localField : 'idlot',
+                as: 'idlot'
+            }},
+            {$unwind : '$idlot'},
+            {$lookup:{
+                from : 'varieties',
+                foreignField : '_id',
+                localField : 'idvariety',
+                as: 'idvariety'
+            }},
+            {$unwind : '$idvariety'},
+            {$project:{
+                _id : 0,
+                id : '$_id',
+                idvariety : '$idvariety._id',
+                variety : '$idvariety.nombre',
+                idspecie : '$idvariety.idspecie',
+                manejo : '$idvariety.manejo',
+                idlot : '$idlot._id',
+                lot : '$idlot.nombre',
+                mesh : '$mesh',             
+                stems : '$stems',
+                weight : '$weight',
+                date : '$date',
+                datecreate: '$datecreate',
+                iduser : '$user'    
+            }},
+            {
+                $lookup:{
+                    from:'users',
+                    localField: 'iduser',
+                    foreignField : '_id',
+                    as:'iduser'
+                }
+            },
+            {
+                $lookup:{
+                    from:'species',
+                    localField: 'idspecie',
+                    foreignField : '_id',
+                    as:'idspecie'
+                }
+            },
+            {
+               
+                $unwind:'$idspecie'
+            },
+            {
+               
+                $unwind:'$iduser',
+            },
+            {
+                $project:{
+                id : '$id',
+                idvariety : '$idvariety',
+                variety : '$variety',
+                idspecie : '$idspecie._id',
+                specie : '$idspecie.nombre',
+                manejo : '$manejo',
+                idlot : '$idlot',
+                lot : '$lot',
+                mesh : '$mesh',
+                stems : '$stems',
+                weight : '$weight',
+                date : '$date',
+                datecreate: '$datecreate',
+                user : '$iduser.nombre',
+                }
+            },
+            
+        ]),            
+            // .skip(Number(init))
+            // .limit(Number(limit)),
         FarmCropHarvest.countDocuments()]
     )
 
@@ -50,20 +126,12 @@ const getFarmCropHarvestbyId = async (req, res)=>{
 
 
 const newFarmCropHarvest = async (req, res = response)=>{       
-    const {status, ...data} = req.body;   
+    const {status, ...data} = req.body; 
+    const dateNow = Date();
     data.user = req.user._id;
-    data.datecreate = moment();
-
-    // console.log(moment(data.date, 'DD/MM/YYYY', true)) 
-    // console.log(data.date) 
-    // console.log(moment("12/25/1995", "MM-DD-YYYY")) 
-    // console.log(moment('01/12/2016', 'DD/MM/YYYY', true).format()) 
-        // const LotDB = await Lot.findOne({nombre});
-        // if(LotDB){
-        //    return res.status(400).json({
-        //         msg: `la Lot ${LotDB.nombre} ya existe`
-        //     });
-        // }
+    data.idfarm = req.farm._id;
+    data.date = moment(data.date).format();
+    data.datecreate = moment().format();
         const harvest = new FarmCropHarvest(data);
         // guardar
         await harvest.save();
@@ -89,16 +157,15 @@ const updateFarmCropHarvest = async(req, res = response)=>{
 // BORRAR Lot - ESTADO A FALSE
 
 const deleteFarmCropHarvest = async (req, res=response)=>{
-    const {id} = req.params;
-    const {status,...data} = req.body
-    if (status == null){
-    const deleteFarmCropHarvest = await Lot.findByIdAndUpdate(id, {status:false},{new: true});
-    res.status(200).json(deleteFarmCropHarvest);
-    }else{
-        const deleteFarmCropHarvest = await Lot.findByIdAndUpdate(id, {status:status},{new: true});
-        res.status(200).json(deleteFarmCropHarvest);
+    try {
+        const {id} = req.params;
+        const deleteFarmCropHarvest = await FarmCropHarvest.findByIdAndDelete(id);
+        if(!deleteFarmCropHarvest)res.status(404).send("No item found")
+        res.status(200).send({});
+        
+    } catch (error) {
+        res.status(500).send(error);
     }
-
 }
 
 module.exports = {

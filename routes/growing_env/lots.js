@@ -5,9 +5,10 @@ const { newLot,
     getLotbyId,
     updateLot,
     deleteLot, 
-    getLotbyIdZone} = require('../../controllers/growing_env/lots');
+    getLotbyIdZone,
+    getLotbyIdFarm} = require('../../controllers/growing_env/lots');
 const { existeSpecie } = require('../../helpers/db_validators');
-const { isAdminRol } = require('../../middleware');
+const { isAdminRol, validateFarm } = require('../../middleware');
 const { validarJWT } = require('../../middleware/validar-jwt');
 const { validarCampos } = require('../../middleware/validate-campos');
 
@@ -31,6 +32,12 @@ router.get('/zone/:id',[
     // check('id').custom(existeSpecie),
     validarCampos
 ],getLotbyIdZone );
+// Ver por finca
+router.get('/farm/current',[
+    validarJWT,
+    validateFarm, 
+    validarCampos
+],getLotbyIdFarm );
 
 // crear una Lot - privado
 router.post('/',[

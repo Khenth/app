@@ -1,4 +1,4 @@
-const { Specie, Variety } = require('../models');
+const { Specie, Variety, FarmCropHarvest } = require('../models');
 const Role = require('../models/role');
 const User = require('../models/user');
 
@@ -34,6 +34,13 @@ const existeSpecie = async(id) =>{
         throw new Error(`Id Specie ${id} no existe`)
     }
 }
+const existeFarmCropHarvest = async(id) =>{
+    const existeFarmCropHarvest = await FarmCropHarvest.findById(id);
+
+    if(!existeFarmCropHarvest){
+        throw new Error(`Id FarmCropHarvest ${id} no existe`)
+    }
+}
 
 const existeVariety = async(id)=>{
     const existeVariety = await Variety.findById(id);
@@ -60,5 +67,6 @@ module.exports={
     existeId,
     existeSpecie,
     existeVariety,
+    existeFarmCropHarvest,
     validatedCollections
 }

@@ -1,6 +1,7 @@
 const { response, request } = require("express");
-const {Lot} = require('../../models')
-
+const {Lot} = require('../../models');
+const zones = require("../../models/growing_env/zones");
+var mongoose = require('mongoose');
 // OBTENER Lots PAGINADO - TOTAL -  POPULATE
 
 const getLots = async (req = request, res = response)=>{
@@ -43,8 +44,37 @@ const getLotbyIdZone = async (req, res)=>{
        res.status(200).json({
         zonelots
        })
+}
 
+const getLotbyIdFarm = async (req, res)=>{
+        const idfarm =  mongoose.Types.ObjectId(req.farm.id);
+        const zonelots = await Lot.aggregate(
+            [
+                {
+                    $lookup:{
+                        from : 'zones',
+                        foreignField: '_id',
+                        localField: 'idzone',
+                        as: 'idzone'                        
+                    }
+                },
+                {$unwind : '$idzone'},
+                {$match: {'idzone.idfarm' : idfarm, status: true},},
+                {$project :{
+                    _id : 1,
+                    nombre : 1,
+                    meters : 1,
+                    idzone : '$idzone._id',
+                    user : 1,
+                    status : 1
+                }}
 
+            ]
+        )
+
+       res.status(200).json({
+        zonelots
+       })
 }
 
 
@@ -111,6 +141,7 @@ module.exports = {
     getLots,
     getLotbyId,
     getLotbyIdZone,
+    getLotbyIdFarm,
     updateLot,
     deleteLot
 }

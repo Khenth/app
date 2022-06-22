@@ -1,9 +1,14 @@
 
 const {Schema, model} = require('mongoose');
-
+const moment = require('moment');
 
 const farmCropHarvestSchema = Schema({
-        idvariery:{
+        idfarm:{
+        type: Schema.Types.ObjectId,
+        ref: 'farm',
+        required: true
+        },
+        idvariety:{
         type: Schema.Types.ObjectId,
         ref: 'varietie',
         required: true
@@ -24,20 +29,15 @@ const farmCropHarvestSchema = Schema({
             required : [true, "Metros Requeridos"],
             default : 0
         },
+        weight:{
+            type : Number,
+        },
         date:{
             type : String,
-            required : [true, "Fecha Requerida"],
-            default : 0
-        },
-        nw:{
-            type : Number,
-            // required : [true, "Metros Requeridos"],
-            // default : moment(date).format('GGGG')
         },
         datecreate:{
-            type : Date,
+            type : String,
         },
-
         user:{
             type: Schema.Types.ObjectId,
             ref: 'user',
@@ -52,6 +52,7 @@ const farmCropHarvestSchema = Schema({
 
 farmCropHarvestSchema.methods.toJSON = function(){
     const {__v,...data} = this.toObject();
+        data.datecreate = moment(data.datecreate).format("YYYY-MM-DD, HH:MM:SS");
       return data;
 }
 

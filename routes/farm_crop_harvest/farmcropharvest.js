@@ -6,8 +6,8 @@ const {  newFarmCropHarvest,
     // getFarmCropHarvestbyIdZone,
     updateFarmCropHarvest,
     deleteFarmCropHarvest} = require('../../controllers/farm_crop_harvest/farmcropharvest');
-const { existeSpecie } = require('../../helpers/db_validators');
-const { isAdminRol } = require('../../middleware');
+const { existeSpecie, existeFarmCropHarvest } = require('../../helpers/db_validators');
+const { isAdminRol, validateFarm } = require('../../middleware');
 const { validarJWT } = require('../../middleware/validar-jwt');
 const { validarCampos } = require('../../middleware/validate-campos');
 
@@ -15,7 +15,11 @@ const router = Router();
 
 
 // ver FarmCropHarvests
-router.get('/', getFarmCropHarvests);
+router.get('/', [
+    validateFarm, 
+    validarCampos
+]
+, getFarmCropHarvests);
 
 // ver FarmCropHarvest
 router.get('/:id',[
@@ -35,6 +39,7 @@ router.get('/:id',[
 // crear una FarmCropHarvest - privado
 router.post('/',[
     validarJWT,
+    validateFarm, 
     // check('nombre','nombre requerido').not().isEmpty(),
     validarCampos
 ],newFarmCropHarvest );
@@ -51,9 +56,9 @@ router.put('/:id',[
 // delete Specie - privado
 router.delete('/:id',[
     validarJWT,
-    isAdminRol,
+    // isAdminRol,
     check('id', 'No es un Id valido').isMongoId(),
-    // check('id').custom(existeSpecie),
+    check('id').custom(existeFarmCropHarvest),
     validarCampos
 ], deleteFarmCropHarvest);
 
