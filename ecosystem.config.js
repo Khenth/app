@@ -1,12 +1,14 @@
 module.exports = {
     apps : [{
       name: "sunday-api",
-      script: "./app.js",
+      script: "app.js",
       watch: true,
       max_memory_restart: 2000,
       exec_mode: "cluster",
+      autorestart: true,
       instances: 1,
       cron_restart: "59 23 * * *",
+      post_update: ["npm install"],
       env: {
         NODE_ENV: "development",
       },
@@ -15,14 +17,14 @@ module.exports = {
       }
     }],
 
-    deploy : {     
-    production : {
-       "user" : "Khenth",
-      //  "host" : ["192.168.0.13", "192.168.0.14", "192.168.0.15"],
-       "ref"  : "origin/main",
-       "repo" : "https://github.com/Khenth/app.git",
-       "path" : "/home/sistemas/Documentos/dockersvolumes/nodejs/app",
-       "post-deploy" : "npm install"
-    }
-  }
+  //   deploy : {     
+  //   production : {
+  //      "user" : "Khenth",
+  //      "host" : ["212.83.163.175"],
+  //      "ref"  : "origin/main",
+  //      "repo" : "git@github.com:Khenth/app.git",
+  //      "path" : "/home/sistemas/Documentos/dockersvolumes/nodejs/app",
+  //      "post-deploy" : "npm install"
+  //   }
+  // }
 };
