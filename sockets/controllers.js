@@ -1,5 +1,5 @@
 const { Socket } = require("socket.io");
-const { comprobarJWT } = require("../helpers/generar_jwt");
+const { comprobarJWT } = require("../helpers");
 const {ChatMensajes} = require("../models");
 
 const chatMensajes = new ChatMensajes()

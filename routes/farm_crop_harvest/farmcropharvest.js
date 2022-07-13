@@ -48,8 +48,6 @@ router.post('/',[
 router.put('/:id',[
     validarJWT,
     check('id', 'No es un Id valido').isMongoId(),
-    // check('id').custom(existeSpecie),
-    check('nombre','nombre requerido').not().isEmpty(),
     validarCampos
 ] ,updateFarmCropHarvest );
 

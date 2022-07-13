@@ -1,13 +1,14 @@
 
 
-const Specie = require('./species');
-const Role = require('./role');
+const Specie = require('./growing_env/specie/species');
+const Role = require('./users/role');
 const Server = require('./server');
-const User = require('./user');
-const Variety = require('./varieties');
-const Farm = require('./growing_env/farms');
-const Zone = require('./growing_env/zones');
-const Lot = require('./growing_env/lots');
+const User = require('./users/user');
+const UserGroup = require('./users/usersGroup');
+const Variety = require('./growing_env/variety/varieties');
+const Farm = require('./growing_env/farm/farms');
+const Zone = require('./growing_env/farm/zones');
+const Lot = require('./growing_env/farm/lots');
 const FarmCropHarvest = require('./farm_crop_harvest/farmcropharvest');
 const ChatMensajes = require('./chat-mensajes');
 
@@ -17,6 +18,7 @@ module.exports={
     Role,
     Server,
     User,
+    UserGroup,
     Variety,
     Farm,
     Zone,

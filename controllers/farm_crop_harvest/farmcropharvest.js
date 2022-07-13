@@ -4,15 +4,16 @@ const moment = require('moment');
 // OBTENER Lots PAGINADO - TOTAL -  POPULATE
 
 const getFarmCropHarvests = async (req = request, res = response)=>{
-
-    // const {limit = 5, init = 0} = req.query;
-   const idfarm = req.farm._id;
+    const idfarm = req.farm._id; 
+    const dateinit = req.query.dateinit;
+    const datefin = req.query.datefin;
     const querySt = {status : true};
 
     const [FarmCropHarvests, totalFarmCropHarvests] = await Promise.all([
-
-        FarmCropHarvest.aggregate([
-            {$match:{idfarm : idfarm}},
+          FarmCropHarvest.aggregate([
+            {
+                $match : { $and: [{idfarm : idfarm}, {date :{$gte : dateinit}},{date :{$lte : datefin}}] } 
+            },
             {$lookup:{
                 from : 'lots',
                 foreignField : '_id',
@@ -82,7 +83,7 @@ const getFarmCropHarvests = async (req = request, res = response)=>{
                 weight : '$weight',
                 date : '$date',
                 datecreate: '$datecreate',
-                user : '$iduser.nombre',
+                user : '$iduser.name',
                 }
             },
             
@@ -102,26 +103,14 @@ const getFarmCropHarvests = async (req = request, res = response)=>{
 // OBTENER SOLO UNA Lot CON POPULATE
 
 const getFarmCropHarvestbyId = async (req, res)=>{
-
         const {id} = req.params;
         const LotId = await Lot.findById(id).populate('user','nombre')
-
        res.status(200).json({
           LotId
        })
 
 
 }
-// const getLotbyIdZone = async (req, res)=>{
-//         const {id} = req.params;
-//         const zonelots = await Lot.find({idzone: id})
-
-//        res.status(200).json({
-//         zonelots
-//        })
-
-
-// }
 
 
 
@@ -130,7 +119,8 @@ const newFarmCropHarvest = async (req, res = response)=>{
     const dateNow = Date();
     data.user = req.user._id;
     data.idfarm = req.farm._id;
-    data.date = moment(data.date).format();
+    data.date = moment(data.date).format('yyyy-MM-DD');
+    console.log(data.date)
     data.datecreate = moment().format();
         const harvest = new FarmCropHarvest(data);
         // guardar
@@ -143,14 +133,10 @@ const newFarmCropHarvest = async (req, res = response)=>{
 
 const updateFarmCropHarvest = async(req, res = response)=>{
     const {id} = req.params;
-    
         const{status, user, ...data} = req.body;
-        data.nombre = data.nombre.toUpperCase();
         data.user = req.user._id;
-  
-        const actualizaLot = await Lot.findByIdAndUpdate(id, data,{new:true});
-
-        res.status(200).json(actualizaLot);
+        const harvest = await FarmCropHarvest.findByIdAndUpdate(id, data,{new:true});
+        res.status(200).json(harvest);
 
 }
 

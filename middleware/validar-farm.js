@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
 
 
 const validateFarm =async (req= request, res = response, next )=>{
-    const idfarm = req.header('c-farm'); 
-   
+    const idfarm = req.header('c-farm');    
     if(!idfarm){
         return res.status(500).json({
             msg: 'Se Una finca Validad'

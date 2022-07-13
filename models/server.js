@@ -81,28 +81,28 @@ class Server{
     }
 
     routes( ){
-       this.app.use(this.paths.authPath, require('../routes/auth'));
+       this.app.use(this.paths.authPath, require('../routes/auth/auth'));
        //user
-       this.app.use(this.paths.userPath, require('../routes/user'));
-       this.app.use(this.paths.userGroupPath, require('../routes/userGroup'));
+       this.app.use(this.paths.userPath, require('../routes/users/user'));
+       this.app.use(this.paths.userGroupPath, require('../routes/users/userGroup'));
        //menu
-       this.app.use(this.paths.mainMenuPath, require('../routes/mainmenu'));
-       this.app.use(this.paths.subMenuPath, require('../routes/submenu'));
-       this.app.use(this.paths.subMenuOptionsPath, require('../routes/submenuoptions'));
+       this.app.use(this.paths.mainMenuPath, require('../routes/menu/mainmenu/mainmenu'));
+       this.app.use(this.paths.subMenuPath, require('../routes/menu/menu/submenu'));
+       this.app.use(this.paths.subMenuOptionsPath, require('../routes/menu/submenu/submenuoptions'));
        //menuauth
-       this.app.use(this.paths.userAuthMenuPath, require('../routes/menuoptions'));
+       this.app.use(this.paths.userAuthMenuPath, require('../routes/menu/menuoptions'));
        //cruds
-       this.app.use(this.paths.speciesPath, require('../routes/species'));
-       this.app.use(this.paths.varietiesPath, require('../routes/variety'));
-       this.app.use(this.paths.farmsPath, require('../routes/growing_env/farms'));
-       this.app.use(this.paths.zonesPath, require('../routes/growing_env/zones'));
-       this.app.use(this.paths.lotsPath, require('../routes/growing_env/lots'));
+       this.app.use(this.paths.speciesPath, require('../routes/growing_env/specie/species'));
+       this.app.use(this.paths.varietiesPath, require('../routes/growing_env/variety/variety'));
+       this.app.use(this.paths.farmsPath, require('../routes/growing_env/farm/farms'));
+       this.app.use(this.paths.zonesPath, require('../routes/growing_env/farm/zones'));
+       this.app.use(this.paths.lotsPath, require('../routes/growing_env/farm/lots'));
        //registro cosecha
        this.app.use(this.paths.farmCropHarvestPath, require('../routes/farm_crop_harvest/farmcropharvest'));
        //buscar
-       this.app.use(this.paths.buscarPath, require('../routes/buscar'));
+       this.app.use(this.paths.buscarPath, require('../routes/search/buscar'));
        //Carga de archivos
-       this.app.use(this.paths.uploadsPath, require('../routes/uploads'));
+       this.app.use(this.paths.uploadsPath, require('../routes/uploads/uploads'));
     }
 
     sockets(){
