@@ -32,33 +32,16 @@
   <title>Sunday App</title>
   <link rel="manifest" href="manifest.json">
 
-  <style>
-    .container{
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      /* background-color: #212332; */
-    }
-    .indicator{
-      width: 10vw;
-    }
-
-  </style>
-
   <script>
     // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = '661492290';
+    var serviceWorkerVersion = '1491492544';
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
-<body style="overflow: hidden">
+<body>
   
-  <div id="loading_indicator" class="container">
-    <img class="indicator" src="./assets/loading-200x150.gif" alt="loading indicator">
-  </div>
+  
 
   <script>
     window.addEventListener('load', function(ev) {
@@ -75,15 +58,5 @@
     });
   </script>
 
-<script>
-  window.onload = function(){
-    setTimeout(function(){
-      var loading_indicator = document.getElementById("loading_indicator");
-      if(loading_indicator){
-        loading_indicator.remove();
-      }
-    }, 10000)
-  }
-</script>
 </body>
 </html>
